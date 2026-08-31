@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="docGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="emeraldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#10b981" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background Rounded Shield -->
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#docGradient)" stroke="#334155" stroke-width="8"/>
+
+  <!-- Subtle Accent Ring -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="#10b981" stroke-width="4" stroke-dasharray="16 10" opacity="0.4"/>
+
+  <!-- Medical Cross / Doctor Tech Icon -->
+  <g filter="url(#glow)">
+    <!-- Vertical Cross Bar with Rounded Corners -->
+    <rect x="216" y="112" width="80" height="288" rx="24" fill="url(#emeraldGradient)"/>
+    <!-- Horizontal Cross Bar with Rounded Corners -->
+    <rect x="112" y="216" width="288" height="80" rx="24" fill="url(#emeraldGradient)"/>
+  </g>
+
+  <!-- Inner Pulse Line (Stethoscope / Heartbeat ECG) in Pure White -->
+  <path d="M140 256 H 195 L 225 185 L 265 335 L 295 235 L 320 270 H 372" 
+        fill="none" 
+        stroke="#ffffff" 
+        stroke-width="18" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Doctor Badge Sparkle / Stethoscope Node -->
+  <circle cx="365" cy="155" r="22" fill="#34d399" stroke="#ffffff" stroke-width="6"/>
+  <circle cx="147" cy="357" r="14" fill="#34d399" opacity="0.8"/>
+</svg>

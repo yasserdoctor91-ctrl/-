@@ -199,68 +199,82 @@ const STORAGE_KEYS = {
   ANNOUNCEMENTS: 'doc_workspace_announcements_v1',
   NOTIFICATIONS: 'doc_workspace_notifs_v1',
   AUDIT: 'doc_workspace_audit_v1',
-  CURRENT_USER_ID: 'doc_workspace_curr_user_v1'
+  CURRENT_USER_ID: 'doc_workspace_curr_user_v2'
 };
+
+function safeGetStorage<T>(key: string, fallback: T): T {
+  try {
+    const saved = localStorage.getItem(key);
+    if (!saved) return fallback;
+    const parsed = JSON.parse(saved);
+    return parsed !== null && parsed !== undefined ? parsed : fallback;
+  } catch (e) {
+    console.warn(`Storage read error for ${key}:`, e);
+    return fallback;
+  }
+}
+
+function safeSetStorage(key: string, value: any): void {
+  try {
+    localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
+  } catch (e) {
+    console.warn(`Storage write error for ${key}:`, e);
+  }
+}
 
 export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Load data with fallback to rich initial data
   const [users, setUsers] = useState<User[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.USERS);
-    return saved ? JSON.parse(saved) : INITIAL_USERS;
+    return safeGetStorage<User[]>(STORAGE_KEYS.USERS, INITIAL_USERS);
   });
 
   const [departments] = useState<Department[]>(INITIAL_DEPARTMENTS);
 
   const [conversations, setConversations] = useState<Conversation[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.CONVERSATIONS);
-    return saved ? JSON.parse(saved) : INITIAL_CONVERSATIONS;
+    return safeGetStorage<Conversation[]>(STORAGE_KEYS.CONVERSATIONS, INITIAL_CONVERSATIONS);
   });
 
   const [messages, setMessages] = useState<Message[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.MESSAGES);
-    return saved ? JSON.parse(saved) : INITIAL_MESSAGES;
+    return safeGetStorage<Message[]>(STORAGE_KEYS.MESSAGES, INITIAL_MESSAGES);
   });
 
   const [tasks, setTasks] = useState<Task[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.TASKS);
-    return saved ? JSON.parse(saved) : INITIAL_TASKS;
+    return safeGetStorage<Task[]>(STORAGE_KEYS.TASKS, INITIAL_TASKS);
   });
 
   const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.ATTENDANCE);
-    return saved ? JSON.parse(saved) : INITIAL_ATTENDANCE;
+    return safeGetStorage<AttendanceRecord[]>(STORAGE_KEYS.ATTENDANCE, INITIAL_ATTENDANCE);
   });
 
   const [leaveRequests, setLeaveRequests] = useState<LeaveRequest[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.LEAVES);
-    return saved ? JSON.parse(saved) : INITIAL_LEAVES;
+    return safeGetStorage<LeaveRequest[]>(STORAGE_KEYS.LEAVES, INITIAL_LEAVES);
   });
 
   const [meetings, setMeetings] = useState<Meeting[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.MEETINGS);
-    return saved ? JSON.parse(saved) : INITIAL_MEETINGS;
+    return safeGetStorage<Meeting[]>(STORAGE_KEYS.MEETINGS, INITIAL_MEETINGS);
   });
 
   const [announcements, setAnnouncements] = useState<Announcement[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.ANNOUNCEMENTS);
-    return saved ? JSON.parse(saved) : INITIAL_ANNOUNCEMENTS;
+    return safeGetStorage<Announcement[]>(STORAGE_KEYS.ANNOUNCEMENTS, INITIAL_ANNOUNCEMENTS);
   });
 
   const [notifications, setNotifications] = useState<NotificationItem[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS);
-    return saved ? JSON.parse(saved) : INITIAL_NOTIFICATIONS;
+    return safeGetStorage<NotificationItem[]>(STORAGE_KEYS.NOTIFICATIONS, INITIAL_NOTIFICATIONS);
   });
 
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.AUDIT);
-    return saved ? JSON.parse(saved) : INITIAL_AUDIT_LOGS;
+    return safeGetStorage<AuditLog[]>(STORAGE_KEYS.AUDIT, INITIAL_AUDIT_LOGS);
   });
 
   // Current logged in user (Default to Marketing Manager u-2 or CEO u-1 or Designer u-3)
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
-    const savedId = localStorage.getItem(STORAGE_KEYS.CURRENT_USER_ID);
-    const found = users.find(u => u.id === savedId);
-    return found || users[1] || users[0]; // Defaults to u-2 (أ. محمد علي - مدير التسويق)
+    try {
+      const savedId = localStorage.getItem(STORAGE_KEYS.CURRENT_USER_ID);
+      const found = users.find(u => u.id === savedId);
+      return found || users[1] || users[0] || null;
+    } catch {
+      return users[1] || users[0] || null;
+    }
   });
 
   // Navigation State
@@ -278,48 +292,48 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   // Sync to LocalStorage
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+    safeSetStorage(STORAGE_KEYS.USERS, users);
   }, [users]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.CONVERSATIONS, JSON.stringify(conversations));
+    safeSetStorage(STORAGE_KEYS.CONVERSATIONS, conversations);
   }, [conversations]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages));
+    safeSetStorage(STORAGE_KEYS.MESSAGES, messages);
   }, [messages]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(tasks));
+    safeSetStorage(STORAGE_KEYS.TASKS, tasks);
   }, [tasks]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.ATTENDANCE, JSON.stringify(attendanceRecords));
+    safeSetStorage(STORAGE_KEYS.ATTENDANCE, attendanceRecords);
   }, [attendanceRecords]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.LEAVES, JSON.stringify(leaveRequests));
+    safeSetStorage(STORAGE_KEYS.LEAVES, leaveRequests);
   }, [leaveRequests]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.MEETINGS, JSON.stringify(meetings));
+    safeSetStorage(STORAGE_KEYS.MEETINGS, meetings);
   }, [meetings]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.ANNOUNCEMENTS, JSON.stringify(announcements));
+    safeSetStorage(STORAGE_KEYS.ANNOUNCEMENTS, announcements);
   }, [announcements]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(notifications));
+    safeSetStorage(STORAGE_KEYS.NOTIFICATIONS, notifications);
   }, [notifications]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.AUDIT, JSON.stringify(auditLogs));
+    safeSetStorage(STORAGE_KEYS.AUDIT, auditLogs);
   }, [auditLogs]);
 
   useEffect(() => {
     if (currentUser) {
-      localStorage.setItem(STORAGE_KEYS.CURRENT_USER_ID, currentUser.id);
+      safeSetStorage(STORAGE_KEYS.CURRENT_USER_ID, currentUser.id);
     }
   }, [currentUser]);
 
