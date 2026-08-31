@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #0f172a;
+    --primary-hover: #1e293b;
+    --accent: #10b981;
+    --accent-light: #ecfdf5;
+    --bg: #f8fafc;
+    --sidebar: #ffffff;
+    --border: #e2e8f0;
+    --border-hover: #cbd5e1;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --card: #ffffff;
+    --brand-deep-purple: #0f172a;
+    --brand-soft-pink: #e2e8f0;
+    --brand-light-purple: #f1f5f9;
+    --brand-light-gray: #e2e8f0;
+    --brand-bg: #f8fafc;
+    --brand-dark: #1e293b;
+    --font-cairo: 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-cairo);
+    background-color: var(--bg);
+    color: var(--text-main);
+  }
+}
+
+/* Custom Professional Polish Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Custom audio waveform animations */
+@keyframes soundwave {
+  0%, 100% { height: 4px; }
+  50% { height: 18px; }
+}
+
+.animate-soundwave {
+  animation: soundwave 1s ease-in-out infinite;
+}
+
+/* Custom pulsing radar for calls */
+@keyframes ring-pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(15, 23, 42, 0.5); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 16px rgba(15, 23, 42, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(15, 23, 42, 0); }
+}
+
+.animate-ring-pulse {
+  animation: ring-pulse 2s infinite;
+}
+
+

@@ -1,0 +1,6 @@
+{
+  "name": "DOCTOR WORKSPACE - مساحة عمل الدكتور",
+  "description": "منصة داخلية متكاملة لشركة الدكتور تجمع المحادثات الفورية وإدارة المهام واعتمادها والحضور والانصراف والإجازات والاجتماعات.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
